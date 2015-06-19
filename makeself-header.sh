@@ -483,6 +483,10 @@ fi
 cd "\$tmpdir"
 res=0
 if test x"\$script" != x; then
+    pushd `dirname $0` > /dev/null
+    export MAKESELF_INSTALLER=`pwd`/`basename $0`
+    popd > /dev/null
+
     if test x"\$verbose" = x"y"; then
 		MS_Printf "OK to execute: \$script \$scriptargs \$* ? [Y/n] "
 		read yn
@@ -495,6 +499,8 @@ if test x"\$script" != x; then
     if test "\$res" -ne 0; then
 		test x"\$verbose" = xy && echo "The program '\$script' returned an error code (\$res)" >&2
     fi
+
+    unset MAKESELF_INSTALLER
 fi
 if test x"\$keep" = xn; then
     cd \$TMPROOT
